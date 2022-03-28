@@ -1,5 +1,5 @@
 use std::io::prelude::*;
-use brainfuck::interpreter::Interpreter;
+use brainfuck_toy::interpreter::Interpreter;
 
 fn parse_data() -> Result<Vec<u8>, Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().collect();
