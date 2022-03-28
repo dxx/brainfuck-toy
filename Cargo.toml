@@ -1,0 +1,11 @@
+[package]
+name = "brainfuck"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "interpreter"
+path = "src/main_interpreter.rs"
+
+[dependencies]
+lazy_static = "1.4.0"
