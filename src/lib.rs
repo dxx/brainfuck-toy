@@ -1,6 +1,7 @@
 pub mod opcode;
 pub mod interpreter;
 pub mod interpreter_it;
+pub mod jit;
 
 use std::io::prelude::*;
 

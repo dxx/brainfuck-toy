@@ -11,5 +11,12 @@ path = "src/main_interpreter.rs"
 name = "interpreter_it"
 path = "src/main_interpreter_it.rs"
 
+[[bin]]
+name = "jit"
+path = "src/main_jit.rs"
+
 [dependencies]
 lazy_static = "1.4.0"
+dynasm = "1.2.1"
+dynasmrt = "1.2.1"
+itertools = "*"
