@@ -7,5 +7,9 @@ edition = "2021"
 name = "interpreter"
 path = "src/main_interpreter.rs"
 
+[[bin]]
+name = "interpreter_it"
+path = "src/main_interpreter_it.rs"
+
 [dependencies]
 lazy_static = "1.4.0"
