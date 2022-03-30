@@ -1,6 +1,7 @@
 pub mod opcode;
 pub mod interpreter;
 pub mod interpreter_it;
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 pub mod jit;
 
 use std::io::prelude::*;
