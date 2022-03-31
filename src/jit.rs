@@ -98,10 +98,8 @@ unsafe extern "sysv64" fn getchar(c: *mut u8) {
         .unwrap();
 }
 
-unsafe extern "sysv64" fn putchar(c: *const u8) {
-    std::io::stdout()
-        .write_all(std::slice::from_raw_parts(c, 1))
-        .unwrap();
+unsafe extern "sysv64" fn putchar(c: u8) {
+    std::io::stdout().write_all(&[c]).unwrap();
 }
 
 #[derive(Default)]
