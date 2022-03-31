@@ -92,12 +92,16 @@ impl Code {
     }
 }
 
-unsafe extern "sysv64" fn getchar(char: *mut u8) {
-    std::io::stdin().read_exact(std::slice::from_raw_parts_mut(char, 1)).unwrap();
+unsafe extern "sysv64" fn getchar(c: *mut u8) {
+    std::io::stdin()
+        .read_exact(std::slice::from_raw_parts_mut(c, 1))
+        .unwrap();
 }
 
-unsafe extern "sysv64" fn putchar(char: u8) {
-    std::io::stdout().write_all(&[char]).unwrap();
+unsafe extern "sysv64" fn putchar(c: *const u8) {
+    std::io::stdout()
+        .write_all(std::slice::from_raw_parts(c, 1))
+        .unwrap();
 }
 
 #[derive(Default)]
