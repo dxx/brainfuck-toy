@@ -92,8 +92,12 @@ impl Code {
     }
 }
 
+unsafe extern "sysv64" fn getchar(char: *mut u8) {
+    std::io::stdin().read_exact(std::slice::from_raw_parts_mut(char, 1)).unwrap();
+}
+
 unsafe extern "sysv64" fn putchar(char: u8) {
-    std::io::stdout().write_all(&[char]).unwrap()
+    std::io::stdout().write_all(&[char]).unwrap();
 }
 
 #[derive(Default)]
@@ -145,7 +149,15 @@ impl Interpreter {
                         ; => r
                     )
                 }
-                ItOpcode::GETCHAR => {}
+                ItOpcode::GETCHAR => dynasm!(ops
+                    ; mov r12, rcx
+                    ; mov rdi, rcx
+                    ; mov rax, QWORD getchar as _
+                    ; sub rsp, BYTE 0x28
+                    ; call rax
+                    ; add rsp, BYTE 0x28
+                    ; mov rcx, r12
+                ),
                 ItOpcode::PUTCHAR => dynasm!(ops
                     ; mov r12, rcx
                     ; mov rdi, [rcx]
