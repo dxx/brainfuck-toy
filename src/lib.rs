@@ -1,8 +1,19 @@
 pub mod opcode;
 pub mod interpreter;
 pub mod interpreter_it;
-#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
 pub mod jit;
+
+#[cfg(all(target_arch = "aarch64"))]
+pub mod jit_aarch64;
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+pub mod jit_x64;
+
+#[cfg(all(target_arch = "aarch64"))]
+pub use jit_aarch64::*;
+
+#[cfg(all(target_os = "linux", target_arch = "x86_64"))]
+pub use jit_x64::*;
 
 use std::io::prelude::*;
 
