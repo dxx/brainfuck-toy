@@ -20,7 +20,10 @@ Hello World!
 
 ### JIT
 
-> Linux x64
+Support:
+
+* aarch64
+* x64 (Linux only)
 
 ```shell
 ❯ cargo run --release --bin jit ./bf/hello_world.bf
