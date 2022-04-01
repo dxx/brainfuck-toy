@@ -98,8 +98,10 @@ unsafe extern "sysv64" fn getchar(c: *mut u8) {
         .unwrap();
 }
 
-unsafe extern "sysv64" fn putchar(c: u8) {
-    std::io::stdout().write_all(&[c]).unwrap();
+unsafe extern "sysv64" fn putchar(c: *const u8) {
+    std::io::stdout()
+        .write_all(std::slice::from_raw_parts(c, 1))
+        .unwrap();
 }
 
 #[derive(Default)]
@@ -117,6 +119,7 @@ impl Interpreter {
         dynasm!(ops
             ; .arch x64
             ; mov rcx, rdi
+            ; sub rsp, BYTE 0x28
         );
         
         for opcode in it_opcodes {
@@ -142,7 +145,7 @@ impl Interpreter {
                         ; jz => r
                         ; => l
                     )
-                }
+                },
                 ItOpcode::RSB(_) => {
                     let (l, r) = stack.pop().unwrap();
                     dynasm!(ops
@@ -150,29 +153,26 @@ impl Interpreter {
                         ; jnz => l
                         ; => r
                     )
-                }
+                },
                 ItOpcode::GETCHAR => dynasm!(ops
                     ; mov r12, rcx
                     ; mov rdi, rcx
                     ; mov rax, QWORD getchar as _
-                    ; sub rsp, BYTE 0x28
                     ; call rax
-                    ; add rsp, BYTE 0x28
                     ; mov rcx, r12
                 ),
                 ItOpcode::PUTCHAR => dynasm!(ops
                     ; mov r12, rcx
-                    ; mov rdi, [rcx]
+                    ; mov rdi, rcx
                     ; mov rax, QWORD putchar as _
-                    ; sub rsp, BYTE 0x28
                     ; call rax
-                    ; add rsp, BYTE 0x28
                     ; mov rcx, r12
                 ),
             }
         }
 
         dynasm!(ops
+            ; add rsp, BYTE 0x28
             ; ret
         );
 
